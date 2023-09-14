@@ -1,0 +1,6 @@
+name = "Prompting"
+
+[model]
+llm = "tiiuae/falcon-7b-instruct"
+
+

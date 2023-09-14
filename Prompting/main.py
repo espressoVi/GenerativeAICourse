@@ -1,25 +1,10 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM
-import transformers
-import torch
+#!/usr/bin/env python
+from model import Falcon
 
-model = "tiiuae/falcon-7b-instruct"
-
-tokenizer = AutoTokenizer.from_pretrained(model)
-pipeline = transformers.pipeline( "text-generation",
-    model=model,
-    tokenizer=tokenizer,
-    torch_dtype=torch.bfloat16,
-    trust_remote_code=True,
-    device = torch.device("cuda:0"),
-)
-pr = "Sutanoya: Sutanoya is the best person we know. \n Soumadeep: You must be crazy saying that about yourself!\n Who is right?"
-sequences = pipeline(
-    pr,
-    max_length=200,
-    do_sample=True,
-    top_k=10,
-    num_return_sequences=1,
-    eos_token_id=tokenizer.eos_token_id,
-)
-for seq in sequences:
-    print(f"Result: {seq['generated_text']}")
+def main():
+    sequence = "The quick brown fox jumps over the lazy dog. Who does the quick yellow fox jump over?"
+    model = Falcon()
+    print(model.infer(sequence))
+    
+if __name__ == "__main__":
+    main()
