@@ -2,9 +2,13 @@
 from model import Falcon
 
 def main():
-    sequence = "The quick brown fox jumps over the lazy dog. Who does the quick yellow fox jump over?"
-    model = Falcon()
-    print(model.infer(sequence))
+    agent = Falcon()
+    print(f"\n{'_'*50}\n\tFalcon 7B Instruct\n{'_'*50}\n")
+    while True:
+        sequence = input(">>> ")
+        result = agent(sequence)
+        print(result)
+        print(f"\n{'_'*50}\n")
     
 if __name__ == "__main__":
     main()
