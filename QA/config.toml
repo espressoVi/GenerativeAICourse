@@ -1,0 +1,16 @@
+name = "Conversational Question Answering"
+
+model = "bert-base-uncased"
+
+['train']
+LR = 3e-5
+WARMUP = 250
+EPOCHS = 1
+EVAL_BATCH = 32
+TRAIN_BATCH = 32
+
+['data']
+TRAIN_FILE = "./data/coqa-train-v1.0.json"
+TEST_FILE = "./data/coqa-dev-v1.0.json"
+OUTPUT = "Bert"
+
