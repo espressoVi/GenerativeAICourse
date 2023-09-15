@@ -10,10 +10,12 @@ class Falcon:
         self.llm = config['model']['llm']
         self.tokenizer = AutoTokenizer.from_pretrained(self.llm, padding_side = "left")
         self.tokenizer.pad_token = self.tokenizer.eos_token
-        self.model = AutoModelForCausalLM.from_pretrained(self.llm, trust_remote_code = True)
+        self.model = AutoModelForCausalLM.from_pretrained(self.llm,
+                                                          trust_remote_code = True,
+                                                          torch_dtype = torch.bfloat16)
         self.model.to("cuda")
-        self.generation_config = GenerationConfig(max_new_tokens = 200,
-                                                  temperature=0.5,
+        self.generation_config = GenerationConfig(max_new_tokens = config['model']['MAX_TOKENS'],
+                                                  temperature=config['model']['TEMP'],
                                                   do_sample = True,
                                                   num_return_sequences = 1,
                                                   pad_token_id = self.tokenizer.eos_token_id,
@@ -26,13 +28,9 @@ class Falcon:
                                           generation_config = self.generation_config)
         results = self.tokenizer.decode(results[0], skip_special_tokens=True)
         return results
-
-    def postprocess(self, prompt, result):
-        return result[len(prompt):]
-
     def __call__(self, prompt):
-        preamble = "You are an interactive language model designed to provide accurate and complete responses. Please respond to the following accurately.\n"
+        preamble = config['model']['PREAMBLE']
         prompt = preamble+prompt
         result = self.infer(prompt)
-        return self.postprocess(prompt, result)
+        return result[len(prompt):]
 

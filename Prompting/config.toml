@@ -2,5 +2,6 @@ name = "Prompting"
 
 [model]
 llm = "tiiuae/falcon-7b-instruct"
-
-
+MAX_TOKENS = 500
+TEMP = 0.9
+PREAMBLE = "You are an interactive language model designed to provide accurate and complete responses. Please respond to the following accurately.\n"
